@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users{
+  id String @unique @id 
+  name String
+  email String @unique
+  token String
+  
+  posts Posts[]
+  likes Likes[]
+  hearts Hearts[]
+  comments Comments[]
+  typeUser TypeUsers?
+
+
+  @@map("users")
+}
+
+
+model Hearts {
+  id Int @id @default(autoincrement())
+  author Users @relation(fields: [authorId],references: [id])
+  authorId String @unique
+  post Posts @relation(fields: [postId],references: [id])
+  postId Int @unique
+
+  @@map("hearts")
+}
+
+model Likes{
+  id Int @id @default(autoincrement())
+  author Users @relation(fields: [authorId],references: [id])
+  authorId String @unique
+  post Posts @relation(fields: [postId],references: [id])
+  postId Int @unique
+
+  @@map("likes")
+}
+
+model Comments{
+  id Int @id @default(autoincrement())
+  author Users @relation(fields: [authorId],references: [id])
+  authorId String @unique
+  post Posts @relation(fields: [postId],references: [id])
+  postId Int @unique
+  content String
+  createdAt DateTime @map("created_at")
+
+  @@map("comments")
+}
+
+model Posts {
+  id Int @id @default(autoincrement())
+  author Users @relation(fields: [authorId],references: [id])
+  authorId String @unique
+  title String
+  content String
+  published Boolean
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  comments Comments[]
+  likes Likes[]
+  hearts Hearts[]
+  categories CategoriesOnPosts[]
+
+  @@map("posts")
+}
+
+
+model Categories {
+  id Int @id @default(autoincrement())
+  label String
+
+  posts CategoriesOnPosts[]
+
+  @@map("categories")
+}
+
+
+model TypeUsers {
+  id Int @id @default(autoincrement())
+  author Users @relation(fields: [authorId],references: [id])
+  authorId String @unique
+
+  @@map("type_users")
+}
+
+model CategoriesOnPosts {
+
+  post Posts @relation(fields: [postId],references: [id])
+  postId Int @unique @map("post_id")
+  category Categories @relation(fields: [categoryID],references: [id])
+  categoryID Int @unique @map("category_id")
+
+  @@id([postId,categoryID])
+
+  @@map("categories_on_posts")
+}
