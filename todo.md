@@ -17,7 +17,7 @@
 
 <!-- FRONT-END -->
 # [✓] Criar Estrutura básica Front-End;
-# [] Configurar tema tailwind (fonts, colors, spacings, etc...)
+# [✓] Configurar tema tailwind (fonts, colors, spacings, etc...)
 # [] Criar tela cadastro
 # [] Criar tela login
 # [] Criar tela recuperar senha
