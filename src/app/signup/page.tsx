@@ -8,7 +8,7 @@ import Button from 'src/components/Button';
 import { IconKittySignup } from 'src/components/Icons';
 import Link from 'next/link';
 
-export default function cadastro() {
+export default function Signup() {
   return (
     <React.Fragment>
       <Header/>
@@ -21,9 +21,9 @@ export default function cadastro() {
           <h1 className='font-heading text-heading-x1 text-primaryLight dark:text-textDark font-extrabold'>Cadastro</h1>
           <p className='font-body text-body-x3'> Já tem conta? <Link href='/signin' className='text-primaryLight font-semibold'>Entre aqui!</Link></p> 
           <form action="" className='mt-5'>
-            <InputForm label='Nome'  type='text'/>
-            <InputForm label='Email' type='email'/>
-            <InputForm label='Senha' type='password'/>
+            <InputForm label='Nome'  type='text' placeholder='digite seu nome'/>
+            <InputForm label='Email' type='email' placeholder='digite seu email'/>
+            <InputForm label='Senha' type='password' placeholder='crie sua senha secreta'/>
             <Button title='Continuar' className='mt-4'/>
           </form>
         </div>

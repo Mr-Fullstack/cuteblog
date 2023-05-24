@@ -9,7 +9,7 @@ import Button from 'src/components/Button';
 import { IconKittySignin } from 'src/components/Icons';
 import Link from 'next/link';
 
-export default function login() {
+export default function Login() {
   return (
     <React.Fragment>
       <Header/>
