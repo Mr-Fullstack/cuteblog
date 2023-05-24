@@ -32,13 +32,15 @@ module.exports = {
       errorMessage:"#FF7777",
       errorSuccess:"#3AC050"
     },
-    fontSize: {
-      "heading-x1":['1.375rem','1.5'],
-      "heading-x2":['1.125rem','1.5'],
-      "heading-x3":['0.875rem','1.5'],
+    fontSize: {   
+      "heading-x1":['1.5rem','1.5'],
+      "heading-x2":['1.375rem','1.5'],
+      "heading-x3":['1.125rem','1.5'],
+      "heading-x4":['0.875rem','1.5'],
       "body-x2":['1.25rem','1.5'],
       "body-x3":['1rem','1.5'],
-      "body-x3":['0.875rem','1.5']
+      "body-x3":['0.875rem','1.5'],
+      "body-x4":['0.75rem','1.5']
     }
   },
   plugins: [],
