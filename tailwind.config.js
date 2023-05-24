@@ -17,6 +17,14 @@ module.exports = {
         heading:['Montserrat'],
         body:['Inter']
       },
+      keyframes:{
+        greatings:{
+          'to':{ transform:'translateY(0px)', opacity:1}
+        }
+      }
+      ,animation:{
+        greatings:'greatings .5s forwards linear'
+      }
     },
     colors:{
       gray:"#CCC",
@@ -37,8 +45,8 @@ module.exports = {
       "heading-x2":['1.375rem','1.5'],
       "heading-x3":['1.125rem','1.5'],
       "heading-x4":['0.875rem','1.5'],
-      "body-x2":['1.25rem','1.5'],
-      "body-x3":['1rem','1.5'],
+      "body-x1":['1.25rem','1.5'],
+      "body-x2":['1rem','1.5'],
       "body-x3":['0.875rem','1.5'],
       "body-x4":['0.75rem','1.5']
     }

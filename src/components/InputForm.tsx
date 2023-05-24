@@ -7,10 +7,10 @@ interface InputFormProps extends InputHTMLAttributes<HTMLInputElement>{
 
 export function InputForm({ label,type, value }:InputFormProps) {
   return (
-    <div className='w-100 mb-8'>
+    <div className='w-100 pb-5'>
         <label htmlFor="" className='text-primaryLight dark:text-textDark font-body text-body-x2'>{label}</label><br/>
-        <input type={type} value={value} className='flex h-10 w-full pl-[10px] border-2 rounded-[4px] bg-gray border-textDark dark:bg-secondaryDark dark:border-textLight'/>
-        <span>mensagem referente o input</span>
+        <input type={type} value={value} className='flex h-10 w-full pl-[10px] rounded-[4px] bg-textDark border-gray border dark:bg-secondaryDark dark:border-textLight'/>
+        <span className='font-body text-body-x4'>mensagem referente o input</span>
     </div>
   )
 }
