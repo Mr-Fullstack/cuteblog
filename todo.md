@@ -10,7 +10,7 @@
 # [] Criar Entidade do Comment;
 # [] Criar Rotas para User;
 # [] Criar Rotas para Post;
-# [] Criar Repository para Users;
+# [✓] Criar Repository para Users;
 # [] Criar Repository para Posts;
 # [] Criar Testes unitários Users;
 # [] Criar Testes unitários Posts;
