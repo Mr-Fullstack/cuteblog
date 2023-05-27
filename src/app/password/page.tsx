@@ -4,7 +4,7 @@ import Button from 'src/components/Button'
 import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import { IconKittyHelper } from 'src/components/Icons'
-import { InputForm } from 'src/components/InputForm'
+import InputForm  from 'src/components/InputForm'
 
 export default function Password() {
   return (
@@ -12,7 +12,7 @@ export default function Password() {
     <Header/>
     <Container className='mb-20 sm:flex sm:justify-center gap-16 mt-8 sm:mt-36'>
       <div className='flex-1'>
-        <p className='text-primaryLight mb-4 translate-y-8 opacity-0 animate-greatings delay-1000 font-heading text-heading-x3 font-semibold mr-auto ml-auto w-full md:w-[250px] text-center'>Oi, estou feliz que você está aqui</p>  
+        <p className='text-primaryLight mb-4 translate-y-8 opacity-0 animate-greatings delay-1000 font-heading text-heading-x3 font-semibold mr-auto ml-auto w-full md:w-[250px] text-center'>Ajudarei  você a recuperar sua senha!</p>  
         <IconKittyHelper className='w-[120px] mr-auto ml-auto sm:w-[250px]' />
       </div>
       <div className='flex-1'>

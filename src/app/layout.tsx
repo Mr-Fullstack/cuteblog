@@ -1,3 +1,4 @@
+import UserContext from 'src/contexts/UserContext'
 import './globals.css'
 
 export const metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@500;600;800&display=swap" rel="stylesheet"/>
       </head>
       <body>
-        {children}
+        <UserContext>
+          {children}
+        </UserContext>
       </body>
     </html>
   )

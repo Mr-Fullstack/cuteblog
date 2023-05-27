@@ -21,7 +21,7 @@
 # [✓] Criar tela cadastro
 # [✓] Criar tela login
 # [✓] Criar tela recuperar senha
-# [] Criar contexto de usuário
-# [] Implementar cadastro Front-End
-# [] Implementar login Front-End
-# [] Implementar recuperar senha Front-End
+# [✓] Criar contexto de usuário
+# [✓] Implementar cadastro Front-End
+# [✓] Implementar login Front-End
+# [✓] Implementar recuperar senha Front-End

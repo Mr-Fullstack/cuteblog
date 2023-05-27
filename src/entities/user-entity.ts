@@ -7,7 +7,7 @@ export class User {
     this.props = props;
   }
 
-  get mame(){
+  get name(){
     return this.props.name
   }
 

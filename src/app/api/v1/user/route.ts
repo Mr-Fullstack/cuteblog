@@ -1,28 +1,69 @@
-import { usersDTO } from "src/dtos";
 import { NextResponse } from "next/server";
+import { createClient } from '@supabase/supabase-js';
+
+import { usersDTO } from "src/dtos";
 import { User } from "src/entities/user-entity";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { firebaseAuth } from "src/firebase";
 
-export async function GET()
+const supabase = createClient(  
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+    detectSessionInUrl: false
+  }
+})
+
+export async function GET(request: Request)
 {
+ 
+  let statusCode = 200;
+  let payload = {};
+  const authorization = request.headers.get('authorization');
 
-  const users = await usersDTO.findAll();
-
-  return NextResponse.json({
-    payload:{
-      users
+  if(!authorization)
+  {
+    statusCode = 400
+    payload ={
+      messsage:'Authorization header request bearer token required!',
     }
-  })
+  }
+  else if(request.headers.get('authorization'))
+  {
+    const token = authorization.split(" ")[1] ;
+
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if( error )
+    {
+      statusCode = 401;
+      payload = {
+        messsage:error,
+      }
+    }
+    else
+    {
+      const { id, email, } = data.user
+    
+      const user = {
+        id,
+        email,
+        token
+      }
+
+      payload = {
+        user
+      }
+    }
+  }
+
+  return NextResponse.json({payload},{status:statusCode})
+
 }
 
 export async function POST(request: Request)
 {
   const { email, name, password } =  await request.json();
-
-  const userFirebase =  await createUserWithEmailAndPassword(firebaseAuth, email, password)
-
-  console.log( userFirebase.user )
 
   const newUser = await usersDTO.create({email, name,password});
 
