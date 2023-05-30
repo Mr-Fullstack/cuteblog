@@ -98,6 +98,7 @@ export default function UserContext({children}:PropsWithChildren) {
   const signInAuto = async() => {
     
     const autentication = localStorage.getItem(API.services.localStorage.key_autentication);
+
     if(autentication) 
     {
       const { access_token } = JSON.parse(autentication);

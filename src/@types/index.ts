@@ -52,3 +52,10 @@ type UserCreateApiResponseSucess =  {
 type UserCreateApiResponseError =  {
   data: ApiErrorProps
 }
+
+type ResponseData = {
+  payload?: any;
+  message?:string;
+  statusCode?:number;
+};
+ 

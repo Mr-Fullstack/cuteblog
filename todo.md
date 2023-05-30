@@ -10,6 +10,7 @@
 # [] Criar Entidade do Comment;
 # [] Criar Rotas para User;
 # [] Criar Rotas para Post;
+# [] Criar Rota para obter usuários por email;
 # [✓] Criar Repository para Users;
 # [] Criar Repository para Posts;
 # [] Criar Testes unitários Users;
@@ -25,4 +26,7 @@
 # [✓] Implementar cadastro 
 # [✓] Implementar login 
 # [✓] Implementar recuperar senha 
-# [] Corrigir implementação de login automático referência em: /* https://supabase.com/docs/reference/javascript/auth-getuser */
+# [] Implementar recuperar senha
+# [] Implementar validação nova senha  
+
+

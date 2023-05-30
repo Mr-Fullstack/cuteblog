@@ -4,7 +4,7 @@ import { User} from 'src/entities/user-entity';
 import { PrismaAdapter } from './prisma-adapter';
 
 import {createUserWithEmailAndPassword } from "firebase/auth";
-import { firebaseAuth } from 'src/firebase';
+
 
 export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository{
 
@@ -41,7 +41,7 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
         if (e.code === 'P2002') {
           error = {
             message:'Email já cadastrado',
-            code:400
+            code:409
           }
         }
       }
@@ -64,5 +64,17 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
     return usersFounded;
 
   }
-  
+
+  async findToEmail(email:string): Promise<User|null> {
+
+    const user  = await this.database.users.findFirst({where:{email:{equals:email}}});
+
+    if(user)
+    {
+      return new User({...user});
+    }
+
+    return null;
+
+  }
 }
