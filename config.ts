@@ -1,7 +1,5 @@
 
-let mode = process.env.NODE_ENV as string;
-
-const BASE_URL = ( mode === 'development' ) ? 'http://localhost:3000' : 'https://cuteblog.com.br';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 const API_URL = BASE_URL + "/api/v1/";
 

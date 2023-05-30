@@ -17,10 +17,13 @@ interface ContextUserProps{
   user?:User;
   authLoading:boolean;
   logOut:()=>void;
+  resetPassword:(email:string,redirectTo?: string | undefined)=>Promise<boolean>;
   signInAuto:()=>Promise<void>;
   authMessage:AuthMesageProps;
   signInWithPassword:(email:string,password:string)=>Promise<void>;
   signUpWithPassword:(name:string,email:string,password:string)=>Promise<void>;
+  updatePassword:(email:string,redirectTo?: string | undefined)=>Promise<boolean>;
+  
 }
 
 const ContextUser = React.createContext({} as ContextUserProps)
@@ -120,12 +123,63 @@ export default function UserContext({children}:PropsWithChildren) {
     
   }
   
+  const resetPassword = async(email:string,redirectTo?: string | undefined) => {
+
+    setAuthLoading(true);
+
+    const  { error } = await API.services.user.auth.resetPassword(email,`${window.location.origin}/${redirectTo}`);
+
+    setAuthLoading(false);
+
+    if(error)
+    {
+      setAuthMessage({error:error.message});
+      return false;
+     
+    }
+    else
+    {
+      setAuthMessage({success:"Verify your email"});
+      return true;
+    }
+   
+  }
+
+  const updatePassword = async (new_password:string,redirectTo?:string)=>{
+
+    const autentication = localStorage.getItem(API.services.localStorage.key_autentication);
+
+    if(autentication)
+    {
+      setAuthLoading(true);
+      const { error } = await API.services.user.auth.updatePassword(new_password,redirectTo);
+      setAuthLoading(false);
+  
+      if(error)
+      {
+        setAuthMessage({error:"error"})
+      }
+      else
+      {
+        setAuthMessage({success:"The password has been replaced successfully!"});
+        return true;
+      }
+    }
+    else
+    {
+      setAuthMessage({error:"Not autentication"});
+      return false;
+    }
+    return false;
+  }
+
   React.useEffect(()=>{
     
     if(!user)
     {
-      signInAuto()
+      signInAuto();
     }
+
   },[])
 
   return (
@@ -135,6 +189,8 @@ export default function UserContext({children}:PropsWithChildren) {
       logOut,
       signInAuto,
       authMessage,
+      resetPassword,
+      updatePassword,
       signInWithPassword,
       signUpWithPassword
     }}>

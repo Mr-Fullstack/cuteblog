@@ -3,7 +3,7 @@
 
 
 <!-- BACK-END -->
-# [✓] Criar Estrutura básica do Back-End;
+# [✓] Criar Estrutura base do projeto
 # [✓] Criar Schema do Prisma;
 # [✓] Criar Entidade do User;
 # [✓] Criar Entidade do Post;
@@ -16,12 +16,13 @@
 # [] Criar Testes unitários Posts;
 
 <!-- FRONT-END -->
-# [✓] Criar Estrutura básica Front-End;
+# [✓] Criar Estrutura base;
 # [✓] Configurar tema tailwind (fonts, colors, spacings, etc...)
 # [✓] Criar tela cadastro
 # [✓] Criar tela login
 # [✓] Criar tela recuperar senha
 # [✓] Criar contexto de usuário
-# [✓] Implementar cadastro Front-End
-# [✓] Implementar login Front-End
-# [✓] Implementar recuperar senha Front-End
+# [✓] Implementar cadastro 
+# [✓] Implementar login 
+# [✓] Implementar recuperar senha 
+# [] Corrigir implementação de login automático referência em: /* https://supabase.com/docs/reference/javascript/auth-getuser */
