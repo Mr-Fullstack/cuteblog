@@ -18,7 +18,11 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
         data: {
           token:"",
           email, 
-          name, 
+          name,
+          typeUser:
+          {
+            connect:{ id:0 }
+          }
         }
       })
   

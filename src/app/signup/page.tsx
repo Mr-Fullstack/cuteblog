@@ -37,7 +37,6 @@ export default function Signup() {
     await signUpWithPassword(name,email,password);
   }  
 
-  
   const formLoginValidate = (): FormSignupValidateProps => {
     return {
       name:{
@@ -68,7 +67,6 @@ export default function Signup() {
       }
     }
   }
-
 
   return (
     <React.Fragment>

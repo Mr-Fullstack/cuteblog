@@ -18,7 +18,7 @@ export async function GET(request: NextApiRequest)
   }
   else if(request.headers.authorization)
   {
-    const token = request.headers.authorization.split(" ")[1] ;
+    const token = request.headers.authorization.split(" ")[1];
 
     const { data, error } = await supabase.auth.getUser(token);
 

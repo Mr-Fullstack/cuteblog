@@ -1,6 +1,5 @@
 // Entities
 
-
 interface UserLitleProps {
   id:number;
   name:string;
@@ -17,15 +16,22 @@ interface UserEntityProps extends UserProps {
 }
 
 interface PostProps {
-  userId:string;
+  authorId:number;
   content:string;
-  label:string;
-  categoryId:string;
+  title:string;
+  categories?:string[];
 }
+
 
 interface PostEntityProps extends PostProps{
-
+  id:number;
+  published:boolean|null;
+  createdAt:Date|null;
+  updatedAt:Date|null;
 }
+
+
+
 
 // APIs 
 

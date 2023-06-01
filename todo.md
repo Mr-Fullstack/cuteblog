@@ -1,20 +1,19 @@
 
 <!-- ✓ Cute Blog TODOs -->
 
-
 <!-- BACK-END -->
 # [✓] Criar Estrutura base do projeto
 # [✓] Criar Schema do Prisma;
 # [✓] Criar Entidade do User;
-# [✓] Criar Entidade do Post;
-# [] Criar Entidade do Comment;
-# [] Criar Rotas para User;
-# [] Criar Rotas para Post;
-# [✓] Criar Rota para obter usuários por email;
 # [✓] Criar Repository para Users;
+# [✓] Criar Rotas Iniciais para User;
+# [✓] Criar Rota para obter usuários por email;
+# [✓] Criar Entidade do Post;
+# [✓] Criar Rotas Iniciais para Post;
 # [] Criar Repository para Posts;
-# [] Criar Testes unitários Users;
 # [] Criar Testes unitários Posts;
+# [] Criar Testes unitários Users;
+# [] Criar Entidade do Comment;
 
 <!-- FRONT-END -->
 # [✓] Criar Estrutura base;
@@ -29,3 +28,8 @@
 # [✓] Implementar validação nova senha  
 # [✓] Implementar validação login  
 # [✓] Implementar validação cadastro
+# [] Criar menu de acesso ao painel admin 
+# [] Criar Rota admin 
+# [] Proteger rota painel admin 
+# [] Criar seção de gerenciar posts
+# [] Implementar editor de textos para post

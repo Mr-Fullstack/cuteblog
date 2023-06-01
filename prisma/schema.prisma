@@ -20,19 +20,19 @@ model Users{
   likes Likes[]
   hearts Hearts[]
   comments Comments[]
-  typeUser TypeUsers?
 
+  typeUser TypeUsers @relation(fields: [typeUserId],references: [id])
+  typeUserId Int @unique @map("type_user_id") 
 
   @@map("users")
 }
 
-
 model Hearts {
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId Int @unique
+  authorId Int @unique @map("author_id") 
   post Posts @relation(fields: [postId],references: [id])
-  postId Int @unique
+  postId Int @unique @map("post_id") 
 
   @@map("hearts")
 }
@@ -40,34 +40,35 @@ model Hearts {
 model Likes{
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId Int @unique
+  authorId Int @unique @map("author_id") 
   post Posts @relation(fields: [postId],references: [id])
-  postId Int @unique
+  postId Int @unique @map("post_id") 
 
   @@map("likes")
 }
 
 model Comments{
   id Int @id @default(autoincrement())
-  author Users @relation(fields: [authorId],references: [id])
-  authorId Int @unique
-  post Posts @relation(fields: [postId],references: [id])
-  postId Int @unique
+  author Users? @relation(fields: [authorId],references: [id])
+  authorId Int? @unique @map("author_id") 
+  post Posts? @relation(fields: [postId],references: [id])
+  postId Int? @unique @map("post_id") 
   content String
-  createdAt DateTime @map("created_at")
+  createdAt DateTime? @map("created_at") @default(now())
 
   @@map("comments")
 }
 
+
 model Posts {
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId Int @unique
+  authorId Int @map("author_id") 
   title String
   content String
-  published Boolean
-  createdAt DateTime @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  published Boolean @default(false)
+  createdAt DateTime @map("created_at") @default(now())
+  updatedAt DateTime @map("updated_at") @updatedAt
 
   comments Comments[]
   likes Likes[]
@@ -87,11 +88,10 @@ model Categories {
   @@map("categories")
 }
 
-
 model TypeUsers {
-  id Int @id @default(autoincrement())
-  author Users @relation(fields: [authorId],references: [id])
-  authorId Int @unique
+  id Int @id @unique
+  label String
+  users Users[]
 
   @@map("type_users")
 }
@@ -100,10 +100,10 @@ model CategoriesOnPosts {
 
   post Posts @relation(fields: [postId],references: [id])
   postId Int @unique @map("post_id")
-  category Categories @relation(fields: [categoryID],references: [id])
-  categoryID Int @unique @map("category_id")
+  category Categories @relation(fields: [categoryId],references: [id])
+  categoryId Int @unique @map("category_id")
 
-  @@id([postId,categoryID])
+  @@id([postId,categoryId])
 
   @@map("categories_on_posts")
 }

@@ -39,11 +39,6 @@ export async function getUserToEmail(email:string) {
     method:'GET',
   })
 
-  if(data.payload)
-  {
-    return data.payload as UserLitleProps;
-  }
-
   return data;
   
 }

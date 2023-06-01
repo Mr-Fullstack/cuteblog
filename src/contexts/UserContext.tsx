@@ -67,22 +67,35 @@ export default function UserContext({children}:PropsWithChildren) {
   }
 
   const signUpWithPassword = async ( name:string, email:string, password:string )=> {
+
     setAuthLoading(true);
-    const { data, error } = await  API.services.user.auth.signUpWithPassword( email, password );
-    
-    if(data)
+    const checkingIfUserHasSubscription = await API.services.user.getUserToEmail(email);
+
+    if(!checkingIfUserHasSubscription.payload)
     {
-      // setAuthMessage({success:"Confirme seu email para ativar cadastro"})
-      router.push('/signup/success');
+
+      const { data, error } = await  API.services.user.auth.signUpWithPassword( email, password );
+      setAuthLoading(false);
+
+      if(data)
+      {
+        router.push('/signup/success');
+      }
+      else if(error)
+      {
+        setAuthMessage({error:error.message});
+      }
     }
-    else if(error)
+    else
     {
-      setAuthMessage({error:error.message});
+      setAuthMessage({error:"Email já cadastrado!"});
     }
+
     setAuthLoading(false);
   }
 
   const logOut = async ()=> {
+    
     setAuthLoading(true);
     const { error } = await  API.services.user.auth.logOut();
     

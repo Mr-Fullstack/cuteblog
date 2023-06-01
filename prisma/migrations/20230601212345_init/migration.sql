@@ -4,6 +4,7 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
+    "type_user_id" INTEGER NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -11,8 +12,8 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "hearts" (
     "id" SERIAL NOT NULL,
-    "authorId" INTEGER NOT NULL,
-    "postId" INTEGER NOT NULL,
+    "author_id" INTEGER NOT NULL,
+    "post_id" INTEGER NOT NULL,
 
     CONSTRAINT "hearts_pkey" PRIMARY KEY ("id")
 );
@@ -20,8 +21,8 @@ CREATE TABLE "hearts" (
 -- CreateTable
 CREATE TABLE "likes" (
     "id" SERIAL NOT NULL,
-    "authorId" INTEGER NOT NULL,
-    "postId" INTEGER NOT NULL,
+    "author_id" INTEGER NOT NULL,
+    "post_id" INTEGER NOT NULL,
 
     CONSTRAINT "likes_pkey" PRIMARY KEY ("id")
 );
@@ -29,10 +30,10 @@ CREATE TABLE "likes" (
 -- CreateTable
 CREATE TABLE "comments" (
     "id" SERIAL NOT NULL,
-    "authorId" INTEGER NOT NULL,
-    "postId" INTEGER NOT NULL,
+    "author_id" INTEGER,
+    "post_id" INTEGER,
     "content" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "comments_pkey" PRIMARY KEY ("id")
 );
@@ -40,11 +41,11 @@ CREATE TABLE "comments" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
-    "authorId" INTEGER NOT NULL,
+    "author_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "published" BOOLEAN NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "posts_pkey" PRIMARY KEY ("id")
@@ -60,8 +61,8 @@ CREATE TABLE "categories" (
 
 -- CreateTable
 CREATE TABLE "type_users" (
-    "id" SERIAL NOT NULL,
-    "authorId" INTEGER NOT NULL,
+    "id" INTEGER NOT NULL,
+    "label" TEXT NOT NULL,
 
     CONSTRAINT "type_users_pkey" PRIMARY KEY ("id")
 );
@@ -81,28 +82,28 @@ CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "hearts_authorId_key" ON "hearts"("authorId");
+CREATE UNIQUE INDEX "users_type_user_id_key" ON "users"("type_user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "hearts_postId_key" ON "hearts"("postId");
+CREATE UNIQUE INDEX "hearts_author_id_key" ON "hearts"("author_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "likes_authorId_key" ON "likes"("authorId");
+CREATE UNIQUE INDEX "hearts_post_id_key" ON "hearts"("post_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "likes_postId_key" ON "likes"("postId");
+CREATE UNIQUE INDEX "likes_author_id_key" ON "likes"("author_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "comments_authorId_key" ON "comments"("authorId");
+CREATE UNIQUE INDEX "likes_post_id_key" ON "likes"("post_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "comments_postId_key" ON "comments"("postId");
+CREATE UNIQUE INDEX "comments_author_id_key" ON "comments"("author_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "posts_authorId_key" ON "posts"("authorId");
+CREATE UNIQUE INDEX "comments_post_id_key" ON "comments"("post_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "type_users_authorId_key" ON "type_users"("authorId");
+CREATE UNIQUE INDEX "type_users_id_key" ON "type_users"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_on_posts_post_id_key" ON "categories_on_posts"("post_id");
@@ -111,28 +112,28 @@ CREATE UNIQUE INDEX "categories_on_posts_post_id_key" ON "categories_on_posts"("
 CREATE UNIQUE INDEX "categories_on_posts_category_id_key" ON "categories_on_posts"("category_id");
 
 -- AddForeignKey
-ALTER TABLE "hearts" ADD CONSTRAINT "hearts_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_type_user_id_fkey" FOREIGN KEY ("type_user_id") REFERENCES "type_users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "hearts" ADD CONSTRAINT "hearts_postId_fkey" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "hearts" ADD CONSTRAINT "hearts_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "likes" ADD CONSTRAINT "likes_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "hearts" ADD CONSTRAINT "hearts_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "likes" ADD CONSTRAINT "likes_postId_fkey" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "likes" ADD CONSTRAINT "likes_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "likes" ADD CONSTRAINT "likes_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_postId_fkey" FOREIGN KEY ("postId") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "comments" ADD CONSTRAINT "comments_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "posts" ADD CONSTRAINT "posts_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "comments" ADD CONSTRAINT "comments_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "type_users" ADD CONSTRAINT "type_users_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "posts" ADD CONSTRAINT "posts_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "categories_on_posts" ADD CONSTRAINT "categories_on_posts_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
