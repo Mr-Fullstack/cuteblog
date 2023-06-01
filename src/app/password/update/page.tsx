@@ -47,7 +47,7 @@ export default function page() {
     }
   }
 
-  const formUpdatePasswordValidate = ():FormUpdatePasswordProps => {
+  const formUpdatePasswordValidate = (): FormUpdatePasswordProps => {
     return {
       password:{
         required:validateInputRequired(),

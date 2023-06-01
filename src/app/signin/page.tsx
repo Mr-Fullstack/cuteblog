@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useForm } from "react-hook-form";
+import { RegisterOptions, useForm } from "react-hook-form";
 import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import InputForm from 'src/components/InputForm'
@@ -9,6 +9,7 @@ import Button from 'src/components/Button';
 import { IconKittySignin } from 'src/components/Icons';
 import Link from 'next/link';
 import { Auth } from 'src/contexts/UserContext';
+import { validateInputRequired, validatePassword } from 'src/helpers';
 
 
 type FormLoginInputs = {
@@ -16,6 +17,10 @@ type FormLoginInputs = {
   password: string,
 };
 
+export interface FormLoginValidateProps{
+  email:RegisterOptions<FormLoginInputs,"email">;
+  password:RegisterOptions<FormLoginInputs,"password">;
+}
 export default function Login() {
   
   const { signInWithPassword,authMessage } =  Auth();
@@ -24,7 +29,7 @@ export default function Login() {
     register, 
     handleSubmit,
     reset,
-    formState: { errors,isValid } } = useForm<FormLoginInputs>({mode:"onChange",criteriaMode: 'all',});
+    formState: { errors,isValid } } = useForm<FormLoginInputs>({mode:'all',criteriaMode:"all",shouldFocusError:true});
 
   const handlerSignin = async ( data:FormLoginInputs ) => {
 
@@ -35,6 +40,24 @@ export default function Login() {
     if(authMessage)
     {
       reset(data);
+    }
+  }
+
+  const formLoginValidate = (): FormLoginValidateProps => {
+    return {
+      email:{
+        required:validateInputRequired(),
+        validate: (val: string) => {
+          if (!val.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ) 
+          {
+            return "Email inserido não é válido.";
+          }
+        }
+      },
+      password: {
+        required:validateInputRequired(),
+        minLength:validatePassword(),
+      }
     }
   }
   
@@ -56,7 +79,7 @@ export default function Login() {
               type='email' 
               aria-invalid={errors.email?.message ? "true" : "false"} 
               error={errors.email && errors.email?.message} 
-              {...register("email",{required:true})} 
+              {...register("email",formLoginValidate().email)} 
             />
 
             <InputForm 
@@ -64,9 +87,8 @@ export default function Login() {
               type='password'
               aria-invalid={errors && errors.password?.message ? "true" : "false"}  
               error={errors.password && errors.password?.message} 
-              {...register("password",{required:true,minLength:8})}
+              {...register("password",formLoginValidate().password)}
             />
-            <p>{errors.password && errors.password?.message}</p>
             <p className='font-body text-body-x4 -mt-2'> <Link href='/password' className='text-backgroundDark font-semibold'>Esqueceu a senha?</Link> </p> 
             <p>{authMessage.error && authMessage.error}</p>
             <p>{authMessage.success && authMessage.success}</p>
