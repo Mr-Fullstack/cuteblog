@@ -27,5 +27,5 @@
 # [✓] Implementar login 
 # [✓] Implementar recuperar senha 
 # [✓] Implementar validação nova senha  
-# [] Implementar validação login  
-# [] Implementar validação cadastro
+# [✓] Implementar validação login  
+# [✓] Implementar validação cadastro

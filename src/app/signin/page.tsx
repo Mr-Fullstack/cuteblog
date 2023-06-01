@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { RegisterOptions, useForm } from "react-hook-form";
 import Container from 'src/components/Container'
 import Header from 'src/components/Header'
@@ -12,39 +12,48 @@ import { Auth } from 'src/contexts/UserContext';
 import { validateInputRequired, validatePassword } from 'src/helpers';
 
 
-type FormLoginInputs = {
+type FormSigninInputs = {
   email: string,
   password: string,
 };
 
-export interface FormLoginValidateProps{
-  email:RegisterOptions<FormLoginInputs,"email">;
-  password:RegisterOptions<FormLoginInputs,"password">;
+export interface FormSigninValidateProps{
+  email:RegisterOptions<FormSigninInputs,"email">;
+  password:RegisterOptions<FormSigninInputs,"password">;
 }
 
 export default function Login() {
   
   const { signInWithPassword,authMessage } =  Auth();
+  const [message,setMessage] = useState<string | null>(null);
 
   const { 
     register, 
     handleSubmit,
     reset,
-    formState: { errors,isValid } } = useForm<FormLoginInputs>({mode:'all',criteriaMode:"all",shouldFocusError:true});
+    formState: { errors,isValid } } = useForm<FormSigninInputs>({mode:'all',criteriaMode:"all",shouldFocusError:true});
 
-  const handlerSignin = async ( data:FormLoginInputs ) => {
+  const handlerSignin = async ( data:FormSigninInputs ) => {
 
     const { email, password } = data;
   
-    await signInWithPassword( email, password );
-
-    if(authMessage)
+    if(email && password)
     {
-      reset(data);
+      await signInWithPassword( email, password );
+
+      if(authMessage)
+      {
+        reset(data);
+      }
     }
+    else
+    {
+      setMessage("Por favor! preencha os dados corretamente.")
+    }
+    
   }
 
-  const formLoginValidate = (): FormLoginValidateProps => {
+  const formLoginValidate = (): FormSigninValidateProps => {
     return {
       email:{
         required:validateInputRequired(),
@@ -93,6 +102,7 @@ export default function Login() {
             <p className='font-body text-body-x4 -mt-2'> <Link href='/password' className='text-backgroundDark font-semibold'>Esqueceu a senha?</Link> </p> 
             <p>{authMessage.error && authMessage.error}</p>
             <p>{authMessage.success && authMessage.success}</p>
+            <p>{message && message}</p>
             <Button title='Entrar'className='mt-10' type='submit' disabled={!isValid}/> 
           </form>
         </div>
