@@ -21,10 +21,10 @@ export class User {
     return this.props.email
   }
 
-  get token(){
+  // get token(){
 
-    return this.props.token
-  }
+  //   return this.props.token
+  // }
 
   getAllProps(){
 
@@ -32,7 +32,7 @@ export class User {
       id:this.props.id,
       name:this.props.name,
       email:this.props.email,
-      token:this.props.token
+      // token:this.props.token
     }
   }
 }

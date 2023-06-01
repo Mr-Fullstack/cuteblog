@@ -8,17 +8,20 @@ export async function GET(request: NextRequest)
   const email  =  request.nextUrl.searchParams.get('email');
   let res:ResponseData = {}
 
+  console.log(email)
   if( email && new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email) )
   {
     const user = await usersDTO.findToEmail(email);
 
     if(user)
     {
+      
       res.payload = {
         id:user.id,
         name:user.name,
         email:user.email
       }
+
     }
     else
     {

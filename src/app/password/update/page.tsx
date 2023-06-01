@@ -2,25 +2,33 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Message } from 'postcss'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { RegisterOptions, ValidationRule, ValidationValue, ValidationValueMessage, useForm } from 'react-hook-form'
 import Button from 'src/components/Button'
 import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import { IconKittyHelper } from 'src/components/Icons'
 import InputForm from 'src/components/InputForm'
 import { Auth } from 'src/contexts/UserContext'
+import { validatePassword,validateInputRequired } from 'src/helpers'
 
 interface FormInputProps{
   password:string;
   confirm_password:string;
 }
 
+export interface FormUpdatePasswordProps{
+  password:RegisterOptions<FormInputProps,"password">;
+  confirm_password:RegisterOptions<FormInputProps,"confirm_password">;
+}
+
 export default function page() {
   const router = useRouter();
+
   const { authLoading , authMessage, updatePassword } = Auth();
 
-  const { register, handleSubmit, formState:{ errors, isValid } } = useForm<FormInputProps>({mode:'onChange',criteriaMode:"all",shouldFocusError:true});
+  const { watch, register, handleSubmit, formState:{ errors, isValid } } = useForm<FormInputProps>({mode:'all',criteriaMode:"all",shouldFocusError:true});
  
   const  handlerResetPassword = async( { password, confirm_password }: FormInputProps )=> {
   
@@ -36,6 +44,25 @@ export default function page() {
     else
     {
 
+    }
+  }
+
+  const formUpdatePasswordValidate = ():FormUpdatePasswordProps => {
+    return {
+      password:{
+        required:validateInputRequired(),
+        minLength:validatePassword()
+      },
+      confirm_password: {
+        required:validateInputRequired(),
+        minLength:validatePassword(),
+        validate: (val: string) => {
+          if (watch('password') != val) 
+          {
+            return "Os valores para senha são diferentes";
+          }
+        }
+      }
     }
   }
 
@@ -56,14 +83,14 @@ export default function page() {
             type='password' placeholder='digite seu email'  
             aria-invalid={errors.password?.message ? "true" : "false"}  
             error={errors.password?.message}
-            {...register('password',{required:true})}
+            {...register('password',formUpdatePasswordValidate().password)}
           />
           <InputForm 
             label='Confirme a senha' 
             type='password' placeholder='Confirme sua senha'  
             aria-invalid={errors.confirm_password?.message ? "true" : "false"}  
             error={errors.confirm_password?.message}
-            {...register('confirm_password',{required:true})}
+            {...register('confirm_password',formUpdatePasswordValidate().confirm_password)}
           />
 
           {authMessage.error && <p>{authMessage.error}</p>}

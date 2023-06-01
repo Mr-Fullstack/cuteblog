@@ -1,13 +1,19 @@
 // Entities
 
+
+interface UserLitleProps {
+  id:number;
+  name:string;
+  email:string;
+}
+
 interface UserProps {
   name:string;
   email:string;
 }
 
 interface UserEntityProps extends UserProps {
-  id:string;
-  token:string;
+  id:number;
 }
 
 interface PostProps {
@@ -28,12 +34,9 @@ interface ApiErrorProps {
   code:number;
 }
 
-
-
 // API Request
 
 interface UserPropsRequest{
-  password:string;
   name:string;
   email:string;
 }
@@ -54,8 +57,10 @@ type UserCreateApiResponseError =  {
 }
 
 type ResponseData = {
-  payload?: any;
+  payload?:any;
   message?:string;
   statusCode?:number;
 };
  
+
+// form 

@@ -128,6 +128,15 @@ export default function UserContext({children}:PropsWithChildren) {
 
     setAuthLoading(true);
 
+    const { message, payload } = await API.services.user.getUserToEmail(email) as ResponseData;
+   
+    if(!payload)
+    {
+      setAuthLoading(false);
+      setAuthMessage({error:message});
+      return false;
+    }
+
     const  { error } = await API.services.user.auth.resetPassword(email,`${window.location.origin}/${redirectTo}`);
 
     setAuthLoading(false);

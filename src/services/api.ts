@@ -1,5 +1,5 @@
 import { API_URL } from "config"
-import { createUser, getUser } from "./user-services"
+import { createUser, getUser, getUserToEmail } from "./user-services"
 import { fetchData } from "src/helpers";
 import { SupabaseAdapter } from "src/adapters/auths/supabase-auth-adapter";
 
@@ -11,7 +11,8 @@ const API  = {
     user:{
       auth:authProvider,
       createUser,
-      getUser
+      getUser,
+      getUserToEmail
     },
     localStorage:{
       key_autentication:'sb-vrarinbefozckvflthma-auth-token'

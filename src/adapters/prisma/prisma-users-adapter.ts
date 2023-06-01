@@ -10,16 +10,13 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
 
   async create(userData:UserPropsRequest): Promise<User|ApiErrorProps> {
 
-    const { email, name, password } = userData;
+    const { email, name } = userData;
 
-    const userCount = await this.database.users.count()+1;
-  
     try {
 
       const user = await this.database.users.create({
         data: {
-          id:"user_"+userCount,
-          token:"teste",
+          token:"",
           email, 
           name, 
         }
@@ -67,7 +64,7 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
 
   async findToEmail(email:string): Promise<User|null> {
 
-    const user  = await this.database.users.findFirst({where:{email:{equals:email}}});
+    const user = await this.database.users.findFirst({where:{email:{equals:email}}});
 
     if(user)
     {
@@ -75,6 +72,12 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
     }
 
     return null;
+  }
 
+  async usersCount() : Promise<number>{
+
+    const user_count = await this.database.users.count();
+    return user_count;
+    
   }
 }

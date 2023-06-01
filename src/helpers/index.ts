@@ -1,3 +1,4 @@
+import { Message , ValidationValue } from 'react-hook-form';
 import { User } from 'src/entities/user-entity';
 import { API } from 'src/services/api';
 
@@ -27,7 +28,6 @@ export async function userMount(access_token:string)
         name:name,
         id:id,
         email:email,
-        token:access_token,
       });
 
       return user;
@@ -51,3 +51,22 @@ export  const getURL = () => {
   return url;
 };
 
+
+export function validatePassword (
+  minLength:number = 8,
+  message:Message ='sua senha deve conter no mínimo 8 caracteres.')
+  {
+  return {
+    value:minLength,
+    message:message
+  }
+}
+
+
+export function validateInputRequired (message:Message ='necessário preencher com um valor')
+{
+  return {
+    value:true,
+    message:message
+  }
+}

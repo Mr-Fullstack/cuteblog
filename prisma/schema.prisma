@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Users{
-  id String @unique @id 
+  id Int @unique @id @default(autoincrement()) 
   name String
   email String @unique
   token String
@@ -30,7 +30,7 @@ model Users{
 model Hearts {
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId String @unique
+  authorId Int @unique
   post Posts @relation(fields: [postId],references: [id])
   postId Int @unique
 
@@ -40,7 +40,7 @@ model Hearts {
 model Likes{
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId String @unique
+  authorId Int @unique
   post Posts @relation(fields: [postId],references: [id])
   postId Int @unique
 
@@ -50,7 +50,7 @@ model Likes{
 model Comments{
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId String @unique
+  authorId Int @unique
   post Posts @relation(fields: [postId],references: [id])
   postId Int @unique
   content String
@@ -62,7 +62,7 @@ model Comments{
 model Posts {
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId String @unique
+  authorId Int @unique
   title String
   content String
   published Boolean
@@ -91,7 +91,7 @@ model Categories {
 model TypeUsers {
   id Int @id @default(autoincrement())
   author Users @relation(fields: [authorId],references: [id])
-  authorId String @unique
+  authorId Int @unique
 
   @@map("type_users")
 }

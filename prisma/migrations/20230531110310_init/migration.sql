@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "users" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "hearts" (
     "id" SERIAL NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "postId" INTEGER NOT NULL,
 
     CONSTRAINT "hearts_pkey" PRIMARY KEY ("id")
@@ -20,7 +20,7 @@ CREATE TABLE "hearts" (
 -- CreateTable
 CREATE TABLE "likes" (
     "id" SERIAL NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "postId" INTEGER NOT NULL,
 
     CONSTRAINT "likes_pkey" PRIMARY KEY ("id")
@@ -29,7 +29,7 @@ CREATE TABLE "likes" (
 -- CreateTable
 CREATE TABLE "comments" (
     "id" SERIAL NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "postId" INTEGER NOT NULL,
     "content" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE "comments" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "published" BOOLEAN NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE "categories" (
 -- CreateTable
 CREATE TABLE "type_users" (
     "id" SERIAL NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
 
     CONSTRAINT "type_users_pkey" PRIMARY KEY ("id")
 );

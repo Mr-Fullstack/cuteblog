@@ -2,6 +2,7 @@ import { User } from "src/entities/user-entity"
 import { fetchData } from "src/helpers";
 import { API } from "./api";
 
+
 export async function getUser(token:string) {
 
   const headers = new Headers();
@@ -32,4 +33,17 @@ export async function createUser() {
 
 }
 
+export async function getUserToEmail(email:string) {
 
+  const { data } = await fetchData<ResponseData>(API.routes.users+`/to-email/?email=${email}`,{
+    method:'GET',
+  })
+
+  if(data.payload)
+  {
+    return data.payload as UserLitleProps;
+  }
+
+  return data;
+  
+}

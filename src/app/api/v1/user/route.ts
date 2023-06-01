@@ -5,13 +5,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "config";
 
 
-const res:ResponseData = {
-  statusCode:200
-}
-
 export async function GET(request: NextApiRequest)
 {
  
+  const res:ResponseData = {}
+
   if(!request.headers.authorization)
   {
     res.statusCode = 400
@@ -51,9 +49,11 @@ export async function GET(request: NextApiRequest)
 
 export async function POST(request: Request)
 {
-  const { email, name, password } =  await request.json();
+  const { email, name } =  await request.json();
 
-  const requestNewUser = await usersDTO.create({email, name,password});
+  const res:ResponseData = {}
+
+  const requestNewUser = await usersDTO.create({email, name});
 
   if ( requestNewUser instanceof User)
   {
