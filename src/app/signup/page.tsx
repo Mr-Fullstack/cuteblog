@@ -9,24 +9,66 @@ import Button from 'src/components/Button';
 import { IconKittySignup } from 'src/components/Icons';
 import Link from 'next/link';
 import { Auth } from 'src/contexts/UserContext';
-import { useForm } from 'react-hook-form';
+import { RegisterOptions, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { validateInputRequired, validatePassword } from 'src/helpers';
 
 
 type FormSignupInputs = {
   name:string;
   email: string,
   password: string,
+  confirm_password:string;
 };
+
+export interface FormSignupValidateProps{
+  name:RegisterOptions<FormSignupInputs,"name">;
+  password:RegisterOptions<FormSignupInputs,"password">;
+  email:RegisterOptions<FormSignupInputs,"email">;
+  confirm_password:RegisterOptions<FormSignupInputs,"confirm_password">;
+}
 
 export default function Signup() {
   
   const { user, authLoading, signUpWithPassword, authMessage } =  Auth();
-  const { register, handleSubmit, watch, formState: { errors, isValid } } = useForm<FormSignupInputs>()
+  const { register, handleSubmit, watch, formState: { errors, isValid } } = useForm<FormSignupInputs>({mode:'all',criteriaMode:"all",shouldFocusError:true})
 
   const handlerSignup = async ({name,email,password}:FormSignupInputs) => {
     await signUpWithPassword(name,email,password);
+  }  
+
+  
+  const formLoginValidate = (): FormSignupValidateProps => {
+    return {
+      name:{
+        required:validateInputRequired()
+      },
+      email:{
+        required:validateInputRequired(),
+        validate: (val: string) => {
+          if (!val.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) ) 
+          {
+            return "Email inserido não é válido.";
+          }
+        }
+      },
+      password: {
+        required:validateInputRequired(),
+        minLength:validatePassword(),
+      },
+      confirm_password: {
+        required:validateInputRequired(),
+        minLength:validatePassword(),
+        validate: (val: string) => {
+          if (watch('password') != val) 
+          {
+            return "Os valores para senha são diferentes";
+          }
+        }
+      }
+    }
   }
+
 
   return (
     <React.Fragment>
@@ -46,7 +88,7 @@ export default function Signup() {
               placeholder='digite seu nome' 
               aria-invalid={errors.name?.message ? "true" : "false"}  
               error={errors.name?.message} 
-              {...register('name',{required:{value:true,message:"precisa inserir um valor"}})}
+              {...register('name',formLoginValidate().name)}
             />
             <InputForm 
               label='Email' 
@@ -54,7 +96,7 @@ export default function Signup() {
               placeholder='digite seu email'
               aria-invalid={errors.email?.message ? "true" : "false"}  
               error={errors.email?.message} 
-              {...register('email',{required:true,pattern:{value:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ ,message:""}})}
+              {...register('email',formLoginValidate().email)}
             />
             <InputForm 
               label='Senha' 
@@ -62,7 +104,14 @@ export default function Signup() {
               placeholder='crie sua senha secreta'
               aria-invalid={errors.password?.message ? "true" : "false"}  
               error={errors.password?.message}  
-              {...register('password',{required:{value:true,message:"precisa inserir um valor"},minLength:8})}
+              {...register('password',formLoginValidate().password)}
+            />
+            <InputForm 
+            label='Confirme a senha' 
+            type='password' placeholder='Confirme sua senha'  
+            aria-invalid={errors.confirm_password?.message ? "true" : "false"}  
+            error={errors.confirm_password?.message}
+             {...register('confirm_password',formLoginValidate().confirm_password)}
             />
             <p>{authMessage.error && authMessage.error}</p>
             <Button title={ authLoading ? 'Processando...' :'Continuar'} className='mt-4'  disabled={!isValid} loading={authLoading}/>

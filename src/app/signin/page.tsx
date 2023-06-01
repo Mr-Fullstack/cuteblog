@@ -21,6 +21,7 @@ export interface FormLoginValidateProps{
   email:RegisterOptions<FormLoginInputs,"email">;
   password:RegisterOptions<FormLoginInputs,"password">;
 }
+
 export default function Login() {
   
   const { signInWithPassword,authMessage } =  Auth();
