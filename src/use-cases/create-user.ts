@@ -9,9 +9,9 @@ export class CreateUser {
 
   constructor(private userRepository : InMemoryUserRepository){}
 
-  async execute({ password, email, name }:CreateUserRequest): Promise<CreateUserResponse> {
+  async execute({ email, name }:CreateUserRequest): Promise<CreateUserResponse> {
 
-    const user = await this.userRepository.create({ password, email, name });
+    const user = await this.userRepository.create({ email, name });
 
     return user;
   };
