@@ -1,24 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { usersDTO } from "src/dtos";
 import { User } from "src/entities/user-entity";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "config";
 
 
-export async function GET(request: NextApiRequest)
+export async function GET(request: NextRequest)
 {
  
   const res:ResponseData = {}
 
-  if(!request.headers.authorization)
+  if(!request.headers.get("Authorization"))
   {
     res.statusCode = 400
     res.message='Authorization header request bearer token required!'
     
   }
-  else if(request.headers.authorization)
+  else if(request.headers.get("Authorization"))
   {
-    const token = request.headers.authorization.split(" ")[1];
+    const token = request.headers.get("Authorization")?.toString().split(" ")[1];
 
     const { data, error } = await supabase.auth.getUser(token);
 
