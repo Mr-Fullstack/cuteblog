@@ -32,7 +32,7 @@ export default function PasswordUpdateSuccess() {
       return (()=>{
         clearInterval(timeInterval)
       })
-  },[time])
+  },[time,router])
 
   return (
     <React.Fragment>

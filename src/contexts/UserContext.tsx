@@ -203,7 +203,7 @@ export default function UserContext({children}:PropsWithChildren) {
       signInAuto();
     }
 
-  },[])
+  },[user])
 
   return (
     <ContextUser.Provider value={{

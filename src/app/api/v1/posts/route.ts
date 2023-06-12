@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { postDTO } from "src/dtos";
 import { User } from "src/entities/user-entity";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -6,7 +6,7 @@ import { supabase } from "config";
 import { Post } from "src/entities/post-entity";
 
 
-export async function GET(request: NextApiRequest)
+export async function GET(request: NextRequest)
 {
  
   const res:ResponseData = {}
