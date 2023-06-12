@@ -1,5 +1,5 @@
 
-import api from 'src/services/api';
+import {API} from 'src/services/api';
 
 import useSWR, { SWRConfiguration } from 'swr'
 
@@ -12,9 +12,8 @@ const swrOptions : SWRConfiguration = {
 export function useFetch<Data = any, Error = any>({path,init}:FetchProps) {
   const { data, error, mutate } = useSWR<Data, Error>(path, async url => {
     
-    const response = await api.request(url,init);
-
-    return response.data;
+    const request = await fetch(url,init);
+    return request.json();
 
   },swrOptions)
 
