@@ -23,7 +23,7 @@ export interface FormUpdatePasswordProps{
   confirm_password:RegisterOptions<FormInputProps,"confirm_password">;
 }
 
-export default function page() {
+export default function PasswordUpdate() {
   const router = useRouter();
 
   const { authLoading , authMessage, updatePassword } = Auth();
@@ -68,7 +68,6 @@ export default function page() {
 
   return (
     <React.Fragment>
-    <Header/>
     <Container className='mb-20 sm:flex sm:justify-center gap-16 mt-8 sm:mt-36'>
       <div className='flex-1'>
         <p className='text-primaryLight mb-4 translate-y-8 opacity-0 animate-greatings delay-1000 font-heading text-heading-x3 font-semibold mr-auto ml-auto w-full md:w-[250px] text-center'>Ajudarei você a criar sua nova senha!</p>  

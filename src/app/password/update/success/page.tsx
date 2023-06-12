@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -6,7 +6,7 @@ import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import { IconKittyCongratulations } from 'src/components/Icons'
 
-export default function page() {
+export default function PasswordUpdateSuccess() {
 
   const [time,setTime] = React.useState(5);
   const router = useRouter();
@@ -36,7 +36,6 @@ export default function page() {
 
   return (
     <React.Fragment>
-    <Header/>
     <Container className='mb-20 sm:flex sm:justify-center gap-16 mt-8 sm:mt-36'>
       <div className='flex-1'>
         <p className='text-primaryLight mb-4 translate-y-8 opacity-0 animate-greatings delay-1000 font-heading text-heading-x3 font-semibold mr-auto ml-auto w-full md:w-[250px] text-center'>Uhu! você conseguir alterar sua senha!</p>  

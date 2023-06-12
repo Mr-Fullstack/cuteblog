@@ -1,5 +1,6 @@
 import UserContext from 'src/contexts/UserContext'
 import './globals.css'
+import Header from 'src/components/Header'
 
 export const metadata = {
   title: 'CuteBlog',
@@ -20,6 +21,7 @@ export default function RootLayout({
       </head>
       <body>
         <UserContext>
+          <Header/>
           {children}
         </UserContext>
       </body>
