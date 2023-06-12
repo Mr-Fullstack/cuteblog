@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -6,7 +6,7 @@ import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import { IconKittyCongratulations } from 'src/components/Icons'
 
-export default function page() {
+export default function PasswordUpdateSuccess() {
 
   const [time,setTime] = React.useState(5);
   const router = useRouter();

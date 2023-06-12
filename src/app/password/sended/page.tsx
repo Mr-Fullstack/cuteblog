@@ -4,7 +4,7 @@ import Container from 'src/components/Container'
 import Header from 'src/components/Header'
 import { IconKittyCongratulations } from 'src/components/Icons'
 
-export default function page() {
+export default function PasswordSended() {
   return (
     <React.Fragment>
     <Container className='mb-20 sm:flex sm:justify-center gap-16 mt-8 sm:mt-36'>

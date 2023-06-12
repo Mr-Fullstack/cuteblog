@@ -23,7 +23,7 @@ export interface FormUpdatePasswordProps{
   confirm_password:RegisterOptions<FormInputProps,"confirm_password">;
 }
 
-export default function page() {
+export default function PasswordUpdate() {
   const router = useRouter();
 
   const { authLoading , authMessage, updatePassword } = Auth();
