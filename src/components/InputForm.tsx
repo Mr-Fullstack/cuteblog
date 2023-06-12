@@ -27,4 +27,5 @@ const InputForm = React.forwardRef<any,InputFormProps>((props,ref)=>{
   )
 })
 
+InputForm.displayName = 'InputFormProps';
 export default InputForm;
