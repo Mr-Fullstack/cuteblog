@@ -30,9 +30,6 @@ interface PostEntityProps extends PostProps{
   updatedAt:Date|null;
 }
 
-
-
-
 // APIs 
 
 interface ApiErrorProps {

@@ -29,7 +29,7 @@
 # [✓] Implementar validação login  
 # [✓] Implementar validação cadastro
 # [✓] Criar menu de acesso ao painel admin 
-# [] Criar Rota admin 
+# [✓] Criar Rota admin 
 # [] Proteger rota painel admin 
 # [] Implementar editor de posts 
 # [] Criar seção de gerenciar posts

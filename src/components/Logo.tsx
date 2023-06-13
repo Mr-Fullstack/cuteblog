@@ -7,7 +7,7 @@ export default function Logo() {
   return (
     <div>
       <React.Suspense fallback={<h1>carregando...</h1>}>
-          <Image src={logoLight.src}  className='w-[154px]' alt=""  />
+          <Image src={logoLight.src}  className='w-[154px]' alt=""  width={154} height={24}/>
       </React.Suspense>  
     </div>
   )
