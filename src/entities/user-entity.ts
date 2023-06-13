@@ -8,17 +8,22 @@ export class User {
   }
 
   get name(){
-    return this.props.name
+    return this.props.name;
   }
 
   get id(){
 
-    return this.props.id
+    return this.props.id;
   }
 
   get email(){
 
-    return this.props.email
+    return this.props.email;
+  }
+
+  get typeUser(){
+
+    return this.props.typeUser;
   }
 
   // get token(){

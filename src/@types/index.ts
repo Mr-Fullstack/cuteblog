@@ -10,9 +10,14 @@ interface UserProps {
   name:string;
   email:string;
 }
+interface UserTypeProps  {
+  id:number;
+  label:'ADMIN' | 'READER' | 'EDITOR';
+}
 
 interface UserEntityProps extends UserProps {
   id:number;
+  typeUser:UserTypeProps;
 }
 
 interface PostProps {
