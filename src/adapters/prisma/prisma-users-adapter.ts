@@ -1,11 +1,11 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, TypeUsers, Users } from '@prisma/client';
 import { UsersRepository } from "src/repositories/users-repository";
 import { User} from 'src/entities/user-entity';
 import { PrismaAdapter } from './prisma-adapter';
 
 export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository{
 
-  async create(userData:UserPropsRequest,typeUserDefault?:number): Promise<ResponseData<User>> {
+  async create(userData:UserPropsRequest, typeUserDefault?:number): Promise<ResponseData<User>> {
 
     const response: ResponseData<User> = {
       statusCode:200
@@ -31,7 +31,7 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
       })
 
       const typeUser = createUser.typeUser as UserTypeProps;
-      response.payload = new User({...createUser,typeUser});    
+      response.payload = new User({...createUser, typeUser});    
     } 
     catch (e) 
     {
@@ -39,7 +39,7 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
       {
         if (e.code === 'P2002') 
         {
-          response.error = 'Email já cadastrado';
+          response.error = 'Registered email!';
           response.statusCode = 409;
         }
       }
@@ -48,9 +48,9 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
     return response;
   }
 
-  async find(email:string): Promise<ResponseData<User>> {
-
-    const response:ResponseData<User> = {
+  async find(email:string): Promise<ResponseData<Users & {  typeUser: TypeUsers }>> 
+  {
+    const response:ResponseData<Users & { typeUser: TypeUsers} > = {
       statusCode:200
     }
 
@@ -66,7 +66,7 @@ export class PrismaUsersAdapter extends PrismaAdapter implements UsersRepository
     if(findUser)
     {
       const typeUser = findUser.typeUser as UserTypeProps;
-      const user = new User({...findUser,typeUser})
+      const user = {...findUser,typeUser}
       response.payload = user;
     }
     else

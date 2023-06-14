@@ -122,11 +122,11 @@ export default function UserContext({children}:PropsWithChildren) {
     if(autentication) 
     {
       const { access_token } = JSON.parse(autentication);
-      const userPayload = await userMount(access_token);
-
-      if(userPayload instanceof User)
+      const userMounted = await userMount(access_token);
+     
+      if(userMounted.payload)
       {
-        setUser(userPayload);
+        setUser(new User(userMounted.payload));
         if(window.location.pathname.includes('signin') || window.location.pathname.includes('signup') )
         {
           router.push('/account');

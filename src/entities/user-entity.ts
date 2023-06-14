@@ -2,36 +2,26 @@ export class User {
 
   private props : UserEntityProps;
 
-  constructor(props: UserEntityProps)
-  {
-    this.props = props;
-  }
-
-  get name(){
+  get name() {
     return this.props.name;
   }
 
-  get id(){
+  get id() {
 
     return this.props.id;
   }
 
-  get email(){
+  get email() {
 
     return this.props.email;
   }
 
-  get typeUser(){
+  get typeUser() {
 
     return this.props.typeUser;
   }
 
-  // get token(){
-
-  //   return this.props.token
-  // }
-
-  getAllProps(){
+  getAllProps() {
 
     return {
       id:this.props.id,
@@ -41,4 +31,10 @@ export class User {
       // token:this.props.token
     }
   }
+
+  constructor(props: UserEntityProps)
+  {
+    this.props = props;
+  }
+  
 }

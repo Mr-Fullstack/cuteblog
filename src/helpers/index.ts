@@ -13,25 +13,24 @@ export async function fetchData<T>(url:string,init?:RequestInit)
 
 export async function userMount(access_token:string)
 {
-  
+  const response:ResponseData<User> = {
+    statusCode : 200
+  }
+
   if(access_token) 
   {
-    const userDatabase = await API.services.user.getUser(access_token);
-  
-    if(userDatabase.payload)
+    const {payload, statusCode, error} = await API.services.user.getUser(access_token);
+    if(payload)
     {
-      const { id, email, name, typeUser } = userDatabase.payload;
-      const user = new User({
-        id,
-        name,
-        email,
-        typeUser
-      });
-
-      return user;
+      response.payload = payload
     }
-    return undefined;
+    if(error)
+    {
+      response.error = error;
+      response.statusCode = statusCode;
+    }
   }
+  return response;
 }
 
 export  const getURL = () => {

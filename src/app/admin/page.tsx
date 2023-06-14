@@ -8,11 +8,14 @@ import ProtectedRouter from 'src/routes/ProtectedRouter'
 export default function Admin() 
 {
   const { user } = Auth();
+
   const router = useRouter();
   
   const handlerSignin= (path:string)=>{
     router.push(path);
   }
+
+  // console.log(user)
 
   const AdminContent = ()=>{
     
@@ -24,7 +27,6 @@ export default function Admin()
         </>
       )
     }
-
     return (
       <>
        <p>OI tudo bem? para acessar o painel você precisar ser um usuário admin!</p>

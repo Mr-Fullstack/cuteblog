@@ -78,34 +78,7 @@ CREATE TABLE "categories_on_posts" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_type_user_id_key" ON "users"("type_user_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "hearts_author_id_key" ON "hearts"("author_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "hearts_post_id_key" ON "hearts"("post_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "likes_author_id_key" ON "likes"("author_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "likes_post_id_key" ON "likes"("post_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_author_id_key" ON "comments"("author_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_post_id_key" ON "comments"("post_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "type_users_id_key" ON "type_users"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "categories_on_posts_post_id_key" ON "categories_on_posts"("post_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "categories_on_posts_category_id_key" ON "categories_on_posts"("category_id");
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_type_user_id_fkey" FOREIGN KEY ("type_user_id") REFERENCES "type_users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

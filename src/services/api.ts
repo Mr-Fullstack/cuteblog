@@ -6,7 +6,7 @@ import { SupabaseAdapter } from "src/adapters/auths/supabase-auth-adapter";
 //just replace this authProvider adapter with another created adapter if necessary exemple (firebase,amazon)
 const authProvider = new SupabaseAdapter(); 
 
-const API  = {
+const API = {
   services:{
     user:{
       auth:authProvider,
