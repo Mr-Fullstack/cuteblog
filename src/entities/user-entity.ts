@@ -37,6 +37,7 @@ export class User {
       id:this.props.id,
       name:this.props.name,
       email:this.props.email,
+      typeUser:this.props.typeUser,
       // token:this.props.token
     }
   }

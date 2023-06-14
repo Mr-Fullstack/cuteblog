@@ -1,36 +1,36 @@
 import { NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import { usersDTO } from "src/dtos";
-import { User } from "src/entities/user-entity";
 
 
 export async function GET(request: NextRequest)
 {
   const email  =  request.nextUrl.searchParams.get('email');
-  let res:ResponseData<User> = {
+
+  const res:ResponseData<any> = {
     statusCode:200
   }
 
+  // console.log(email)
   if( email && new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email) )
   {
-    const user = await usersDTO.findToEmail(email);
+    const { statusCode, payload } = await usersDTO.findToEmail(email);
 
-    if(user.payload)
+    if(!payload)
     {
-      
-      res.payload = user.payload;
+      res.payload="Email is free!"
     }
     else
     {
-      res.statusCode = 404;
-      res.error="No user was found for this email!";
+      res.statusCode = statusCode;
+      res.error="User was found for this email!"
     }
   }
   else
   {
     res.statusCode = 400;
-    res.error="Badly formatted request!";
+    res.error="Badly formatted request!"
   }
 
-  return NextResponse.json(res,{ status: res.statusCode })
+  return NextResponse.json(res,{status:res.statusCode})
 }

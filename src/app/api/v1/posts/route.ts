@@ -9,7 +9,9 @@ import { Post } from "src/entities/post-entity";
 export async function GET(request: NextRequest)
 {
  
-  const res:ResponseData = {}
+  const res:ResponseData<any> = {
+    statusCode:200
+  }
 
   
   return NextResponse.json(res,{status:res.statusCode})

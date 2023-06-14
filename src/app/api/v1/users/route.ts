@@ -4,16 +4,20 @@ import { usersDTO } from "src/dtos";
 
 export async function GET(request:NextRequest)
 {
-  let res:ResponseData = {} 
+  let res:ResponseData<any> = {
+    statusCode:200
+  } 
+
   let limitRequest = request.nextUrl.searchParams.get('limit');
   let offsetRequest = request.nextUrl.searchParams.get('offset');
 
   const limit = ( limitRequest ? parseInt(limitRequest) : 10 );
   const offset = ( offsetRequest ? parseInt(offsetRequest) : 0 );
 
-  const count = await usersDTO.usersCount();
+  const { payload } = await usersDTO.usersCount();
+  const count = payload ? payload : 0;
+
   const totalPage = (count / limit) > 1 ? Math.round(Math.ceil(count / limit)): 1;
-  
   const users = await usersDTO.findAll({
     skip: offset,
     take: limit,
@@ -30,21 +34,20 @@ export async function GET(request:NextRequest)
     users:any[],
   } = { currentPage: Math.round(Math.ceil( offset / limit))+1,totalPage, users:[],back, next}; 
 
-  users.map( user => { 
-    const { email, name } = user.getAllProps();
-    filter.users.push ({email, name })
-  })
-
-  res.payload = filter;
-  
-  if(users.length>1)
+  if(users.payload)
   {
-    return NextResponse.json(res,{status:res.statusCode})
+    users.payload.map( user => { 
+      const { email, name } = user.getAllProps();
+      filter.users.push ({email, name })
+    })
+    
+    res.payload = filter;
   }
   else
   {
-    return NextResponse.json(null,{status:400})
+    res.statusCode=400
   }
-
+  // console.log(res,filter)
+  return NextResponse.json(res,{status:res.statusCode})
 }
 

@@ -9,26 +9,27 @@ import { Post } from "src/entities/post-entity";
 export async function GET(request: NextRequest)
 {
   const { id } = await request.json();
-  
-  const res:ResponseData = {}
 
-    const token = request.headers.get("Authorization")?.split(" ")[1];
+  const res:ResponseData<Post> = {
+    statusCode:200
+  }
 
-    const { error } = await supabase.auth.getUser(token);
+  const token = request.headers.get("Authorization")?.split(" ")[1];
 
-    if( error )
-    {
-      res.statusCode = 401;
-      res.message = error.message
-      
-    }
-    else
-    {
-      const post = await postDTO.find(id);
-      
-      res.payload = post;
-    }
-  
+  const { error } = await supabase.auth.getUser(token);
+
+  if( error )
+  {
+    res.statusCode = 401;
+    res.error = error.message
+    
+  }
+  else
+  {
+    const post = await postDTO.find(id);
+    res.payload = post;
+  }
+
   return NextResponse.json(res,{status:res.statusCode})
 
 }
@@ -43,13 +44,15 @@ export async function POST(request: Request)
     title
   } =  await request.json();
 
-  const res:ResponseData = {}
+  const res:ResponseData<Post> = {
+    statusCode:200
+  }
 
 
   if(!request.headers.get("Authorization"))
   {
     res.statusCode = 400
-    res.message='Authorization header request bearer token required!'
+    res.error='Authorization header request bearer token required!'
     
   }
   else if(request.headers.get("Authorization"))
@@ -61,7 +64,7 @@ export async function POST(request: Request)
     if( error )
     {
       res.statusCode = 401;
-      res.message = error.message
+      res.error = error.message
       
     }
     else
@@ -75,12 +78,12 @@ export async function POST(request: Request)
     
       if ( post instanceof Post )
       {
-        res.payload = {...post.getAllProps()}
+        res.payload = post
       }
       else
       {
         
-        res.message = post.message
+        res.error = post.message
         res.statusCode = post.code
       }
       res.payload = post;

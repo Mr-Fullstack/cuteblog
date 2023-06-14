@@ -8,38 +8,37 @@ import { supabase } from "config";
 export async function GET(request: NextRequest)
 {
  
-  const res:ResponseData = {}
+  const res:ResponseData<User> = {
+    statusCode : 400
+  }
 
   if(!request.headers.get("Authorization"))
   {
-    res.statusCode = 400
-    res.message='Authorization header request bearer token required!'
-    
+    res.statusCode = 400;
+    res.error='Authorization header request bearer token required!';
   }
+
   else if(request.headers.get("Authorization"))
   {
     const token = request.headers.get("Authorization")?.toString().split(" ")[1];
 
-    const { data, error } = await supabase.auth.getUser(token);
-
-    if( error )
+    const getUserAuth = await supabase.auth.getUser(token);
+    if( getUserAuth.error )
     {
       res.statusCode = 401;
-      res.message = error.message
-      
+      res.error = getUserAuth.error.message
     }
     else
     {
-      const { id, email, } = data.user
-    
-      const user = {
-        id,
-        email,
-        token
+      if(getUserAuth.data.user.email)
+      {
+        
+        const { payload, error, statusCode } = await usersDTO.find(getUserAuth.data.user.email);
+        res.payload = payload;
+        res.error = error;
+        res.statusCode = statusCode;
       }
 
-      res.payload = user;
-      
     }
   }
   
@@ -51,21 +50,9 @@ export async function POST(request: Request)
 {
   const { email, name } =  await request.json();
 
-  const res:ResponseData = {}
-
-  const requestNewUser = await usersDTO.create({email, name});
-
-  if ( requestNewUser instanceof User)
-  {
-    res.payload = {...requestNewUser.getAllProps()}
-  }
-  else
-  {
-    
-    res.message = requestNewUser.message
-    res.statusCode = requestNewUser.code
-  }
-
+  console.log(email,name)
+  const res = await usersDTO.create({email, name});
+  
   return NextResponse.json(res,{status:res.statusCode})
 }
 

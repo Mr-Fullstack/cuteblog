@@ -10,9 +10,12 @@ interface UserProps {
   name:string;
   email:string;
 }
+
+type UserTypeLabel = 'ADMIN' | 'READER' | 'EDITOR';
+
 interface UserTypeProps  {
   id:number;
-  label:'ADMIN' | 'READER' | 'EDITOR';
+  label:UserTypeLabel;
 }
 
 interface UserEntityProps extends UserProps {
@@ -35,12 +38,6 @@ interface PostEntityProps extends PostProps{
   updatedAt:Date|null;
 }
 
-// APIs 
-
-interface ApiErrorProps {
-  message:string;
-  code:number;
-}
 
 // API Request
 
@@ -49,26 +46,15 @@ interface UserPropsRequest{
   email:string;
 }
 
-
 // API Reponse 
 
 type UserApiResponse =  {
   user: UserEntityProps
 }
 
-type UserCreateApiResponseSucess =  {
-  data: UserApiResponse
-}
-
-type UserCreateApiResponseError =  {
-  data: ApiErrorProps
-}
-
-type ResponseData = {
-  payload?:any;
-  message?:string;
-  statusCode?:number;
+type ResponseData<T> = {
+  payload?:T;
+  error?:string;
+  statusCode:number;
 };
- 
 
-// form 

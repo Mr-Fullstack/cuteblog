@@ -5,10 +5,10 @@ import { API } from 'src/services/api';
 export async function fetchData<T>(url:string,init?:RequestInit) 
 {
 
-  const data = await fetch(url,init)
+  const request = await fetch(url,init);
+  const data = await request.json() as T;
 
-  return { data : data.json() as T }
-
+  return data;
 }
 
 export async function userMount(access_token:string)
@@ -16,29 +16,23 @@ export async function userMount(access_token:string)
   
   if(access_token) 
   {
-   
     const userDatabase = await API.services.user.getUser(access_token);
   
-    if(userDatabase)
+    if(userDatabase.payload)
     {
-
-    const { id, email, name } = userDatabase;
-
+      const { id, email, name, typeUser } = userDatabase.payload;
       const user = new User({
-        name:name,
-        id:id,
-        email:email,
+        id,
+        name,
+        email,
+        typeUser
       });
 
       return user;
-
     }
-   
     return undefined;
-    
   }
 }
-
 
 export  const getURL = () => {
   let url =
@@ -51,7 +45,6 @@ export  const getURL = () => {
   return url;
 };
 
-
 export function validatePassword (
   minLength:number = 8,
   message:Message ='sua senha deve conter no mínimo 8 caracteres.')
@@ -61,7 +54,6 @@ export function validatePassword (
     message:message
   }
 }
-
 
 export function validateInputRequired (message:Message ='necessário preencher com um valor')
 {

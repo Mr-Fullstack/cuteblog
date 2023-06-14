@@ -15,6 +15,7 @@ export default function Admin()
   }
 
   const AdminContent = ()=>{
+    
     if(user && user.typeUser.label === 'ADMIN')
     {
       return (

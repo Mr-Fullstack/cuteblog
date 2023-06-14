@@ -2,11 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import React, { PropsWithChildren } from 'react'
-
+import AppLoading from 'src/components/AppLoading';
 import { User } from 'src/entities/user-entity';
 import { userMount } from 'src/helpers';
 import { API } from 'src/services/api';
-
 
 interface AuthMesageProps{
   success?:string;
@@ -23,7 +22,6 @@ interface ContextUserProps{
   signInWithPassword:(email:string,password:string)=>Promise<void>;
   signUpWithPassword:(name:string,email:string,password:string)=>Promise<void>;
   updatePassword:(email:string,redirectTo?: string | undefined)=>Promise<boolean>;
-  
 }
 
 const ContextUser = React.createContext({} as ContextUserProps)
@@ -31,10 +29,10 @@ const ContextUser = React.createContext({} as ContextUserProps)
 export default function UserContext({children}:PropsWithChildren) {
 
   const router = useRouter();
-
-  const [user,setUser] = React.useState<User|undefined>();
-  const [authMessage,setAuthMessage] = React.useState<AuthMesageProps>({});
-  const [authLoading,setAuthLoading] = React.useState<boolean>(false);
+  const [user, setUser] = React.useState<User|undefined>();
+  const [authMessage, setAuthMessage] = React.useState<AuthMesageProps>({});
+  const [authLoading, setAuthLoading] = React.useState<boolean>(false);
+  const [appLoading, setAppLoading] = React.useState<boolean>(true);
 
   const signInWithPassword = async (email:string,password:string) => {
 
@@ -69,26 +67,35 @@ export default function UserContext({children}:PropsWithChildren) {
   const signUpWithPassword = async ( name:string, email:string, password:string )=> {
 
     setAuthLoading(true);
-    const checkingIfUserHasSubscription = await API.services.user.getUserToEmail(email);
 
-    if(!checkingIfUserHasSubscription.payload)
+    const emailIsFree = await API.services.user.checkIfEmaiIsFree(email);
+
+    if(emailIsFree.payload)
     {
-
-      const { data, error } = await  API.services.user.auth.signUpWithPassword( email, password );
-      setAuthLoading(false);
-
+      const { data, error } = await API.services.user.auth.signUpWithPassword( email, password );
+  
       if(data)
       {
-        router.push('/signup/success');
+        
+        const { payload, error } = await API.services.user.createUser({email,name});
+        if(payload)
+        {
+          router.push('/signup/success');
+        }
+        
+        if(error)
+        {
+          setAuthMessage({error:error});
+        }
       }
-      else if(error)
+      else
       {
-        setAuthMessage({error:error.message});
+        setAuthMessage({error:error?.message});
       }
     }
     else
     {
-      setAuthMessage({error:"Email já cadastrado!"});
+      setAuthMessage({error:emailIsFree.error});
     }
 
     setAuthLoading(false);
@@ -109,63 +116,57 @@ export default function UserContext({children}:PropsWithChildren) {
   }
 
   const signInAuto = async() => {
-    
+  
     const autentication = localStorage.getItem(API.services.localStorage.key_autentication);
 
     if(autentication) 
     {
       const { access_token } = JSON.parse(autentication);
-
-      setAuthLoading(true);
-
       const userPayload = await userMount(access_token);
-
-      setAuthLoading(false);
 
       if(userPayload instanceof User)
       {
         setUser(userPayload);
-        setAuthMessage({success:'usuário logado'})
-        
         if(window.location.pathname.includes('signin') || window.location.pathname.includes('signup') )
         {
           router.push('/account');
         }
-        
       }
     }
-    
+    setAppLoading(false);
   }
   
   const resetPassword = async(email:string,redirectTo?: string | undefined) => {
 
     setAuthLoading(true);
 
-    const { message, payload } = await API.services.user.getUserToEmail(email) as ResponseData;
+    const userToEmail = await API.services.user.getUserToEmail(email) ;
    
-    if(!payload)
+    if(!userToEmail.payload)
     {
       setAuthLoading(false);
-      setAuthMessage({error:message});
+      setAuthMessage({error:userToEmail.error});
       return false;
     }
 
-    const  { error } = await API.services.user.auth.resetPassword(email,`${window.location.origin}/${redirectTo}`);
+    const resetPassword = await API.services.user.auth.resetPassword(email,`${window.location.origin}/${redirectTo}`);
 
     setAuthLoading(false);
 
-    if(error)
+    if(resetPassword.error)
     {
-      setAuthMessage({error:error.message});
+      setAuthMessage({
+        error:resetPassword.error.message
+      });
       return false;
-     
     }
     else
     {
-      setAuthMessage({success:"Verify your email"});
+      setAuthMessage({
+        success:"Verify your email"
+      });
       return true;
     }
-   
   }
 
   const updatePassword = async (new_password:string,redirectTo?:string)=>{
@@ -203,7 +204,7 @@ export default function UserContext({children}:PropsWithChildren) {
       signInAuto();
     }
 
-  },[user])
+  },[user,appLoading])
 
   return (
     <ContextUser.Provider value={{
@@ -217,11 +218,11 @@ export default function UserContext({children}:PropsWithChildren) {
       signInWithPassword,
       signUpWithPassword
     }}>
-      {children}
+     { !appLoading && children } 
+     { appLoading && <AppLoading/> } 
     </ContextUser.Provider>
   )
 }
-
 
 export const Auth = () => {
   return React.useContext(ContextUser);

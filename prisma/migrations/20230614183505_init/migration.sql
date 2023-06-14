@@ -3,7 +3,6 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "token" TEXT NOT NULL,
     "type_user_id" INTEGER NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -74,9 +73,6 @@ CREATE TABLE "categories_on_posts" (
 
     CONSTRAINT "categories_on_posts_pkey" PRIMARY KEY ("post_id","category_id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

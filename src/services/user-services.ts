@@ -9,36 +9,38 @@ export async function getUser(token:string) {
 
   headers.set("Authorization",`bearer ${token}`);
 
-  const user = await fetchData<User>(API.routes.users,{
+  const res = await fetchData<ResponseData<User>>(API.routes.user,{
     method:'GET',
     headers
   })
 
-  if(user)
-  {
-    return user.data;
-  }
-
-  return undefined
-  
+  return res;
 }
 
-export async function createUser() {
+export async function createUser(userData:UserProps):Promise<ResponseData<User>> {
 
-  const user = await fetchData(API.routes.users,{
+  const res = await fetchData<ResponseData<User>>(API.routes.user,{
     method:'POST',
+    body:JSON.stringify(userData)
   })
 
-  return user.data;
-
+  return res;
 }
 
-export async function getUserToEmail(email:string) {
+export async function getUserToEmail(email:string): Promise<ResponseData<User>> {
 
-  const { data } = await fetchData<ResponseData>(API.routes.users+`/to-email/?email=${email}`,{
+  const res = await fetchData<ResponseData<User>>(API.routes.user+`/to-email?email=${email}`,{
     method:'GET',
   })
 
-  return data;
-  
+  return res;
+}
+
+export async function checkIfEmaiIsFree(email:string): Promise<ResponseData<User>> {
+
+  const res = await fetchData<ResponseData<User>>(API.routes.user+`/free/to-email?email=${email}`,{
+    method:'GET',
+  })
+
+  return res;
 }
